@@ -1,0 +1,24 @@
+# Sample Research Queries for Testing
+
+# AI and Machine Learning
+transformer models in natural language processing
+large language models and emergent abilities
+reinforcement learning for robotics
+graph neural networks applications
+
+# Computer Science
+quantum computing algorithms
+blockchain scalability solutions
+edge computing and IoT
+federated learning privacy
+
+# Other Domains
+CRISPR gene editing recent advances
+climate change mitigation strategies
+renewable energy storage technologies
+neuroscience and brain-computer interfaces
+
+# Usage:
+# python main.py "transformer models in natural language processing"
+# python main.py "quantum computing algorithms" --provider anthropic --max-papers 10
+
