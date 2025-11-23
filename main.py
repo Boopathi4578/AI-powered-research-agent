@@ -117,7 +117,7 @@ def main():
 
             # Skip empty queries
             if not query:
-                print("⚠️ Please enter a valid query.")
+                print("⚠️  Please enter a valid query.")
                 continue
 
             query_count += 1
@@ -142,7 +142,7 @@ def main():
                     print(f"\n✅ Report saved to: {report_path}")
                     print(f"📊 JSON data saved to: {report_path.replace('.md', '.json')}")
                 else:
-                    print("\n⚠️ No report generated.")
+                    print("\n⚠️  No report generated.")
 
             except Exception as e:
                 print(f"\n❌ Error processing query: {e}")

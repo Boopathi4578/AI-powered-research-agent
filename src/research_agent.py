@@ -145,6 +145,44 @@ Please provide a structured analysis.
 
         return paper
 
+    def generate_perspective_title(self, query: str) -> str:
+        """
+        Generate a concise, professional perspective title from the research query.
+
+        Args:
+            query: Original research query
+
+        Returns:
+            A concise perspective title
+        """
+        prompt = f"""
+Analyze the following research query and generate a concise, professional perspective title.
+The title should:
+- Be 3-8 words long
+- Capture the core research focus
+- Be suitable as a report title
+- Use title case
+- Be clear and descriptive
+
+Research Query: "{query}"
+
+Respond with ONLY the title, nothing else.
+"""
+
+        try:
+            response = self.synthesis_agent.run(prompt)
+            title = response.content if hasattr(response, 'content') else str(response)
+            # Clean up the title (remove quotes, extra whitespace, etc.)
+            title = title.strip().strip('"').strip("'").strip()
+            # Limit length if too long
+            if len(title) > 100:
+                title = title[:100].rsplit(' ', 1)[0] + '...'
+            return title
+        except Exception as e:
+            logger.error(f"Error generating perspective title: {str(e)}")
+            # Fallback: capitalize the query
+            return query.title()[:100]
+
     def synthesize_research(self, papers: List[Dict], query: str) -> Dict:
         """
         Synthesize insights from multiple papers.
@@ -237,14 +275,19 @@ Please provide a comprehensive synthesis.
         """
         logger.info(f"Starting research workflow for: '{query}'")
 
-        # Step 1: Fetch papers
+        # Step 1: Generate perspective title
+        logger.info("Generating perspective title...")
+        perspective_title = self.generate_perspective_title(query)
+        logger.info(f"Perspective title: {perspective_title}")
+
+        # Step 2: Fetch papers
         papers = self.fetch_papers(query, sources)
 
         if not papers:
             logger.warning("No papers found for the query.")
             return None
 
-        # Step 2: Summarize each paper
+        # Step 3: Summarize each paper
         logger.info(f"Summarizing {len(papers)} papers...")
         summarized_papers = []
         for i, paper in enumerate(papers, 1):
@@ -252,14 +295,15 @@ Please provide a comprehensive synthesis.
             summarized_paper = self.summarize_paper(paper)
             summarized_papers.append(summarized_paper)
 
-        # Step 3: Synthesize research
+        # Step 4: Synthesize research
         logger.info("Synthesizing research insights...")
         synthesis = self.synthesize_research(summarized_papers, query)
 
-        # Step 4: Generate report
+        # Step 5: Generate report
         logger.info("Generating report...")
         report = self.report_generator.generate_markdown_report(
             query=query,
+            perspective_title=perspective_title,
             papers=summarized_papers,
             executive_summary=synthesis['executive_summary'],
             key_themes=synthesis['key_themes'],
@@ -279,6 +323,7 @@ Please provide a comprehensive synthesis.
         json_filename = output_filename.replace('.md', '.json')
         data = {
             'query': query,
+            'perspective_title': perspective_title,
             'papers': summarized_papers,
             'synthesis': synthesis,
             'generated_at': datetime.now().isoformat()

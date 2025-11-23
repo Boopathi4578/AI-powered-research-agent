@@ -11,9 +11,12 @@ from jinja2 import Template
 class ReportGenerator:
     """Generates structured reports from summarized research papers."""
     
-    MARKDOWN_TEMPLATE = """# Research Report: {{ query }}
+    MARKDOWN_TEMPLATE = """# {{ perspective_title }}
 
-**Generated on:** {{ date }}  
+**Research Query:** {{ query }}
+**Generated on:** {{ date }}
+**Report Date:** {{ report_date }}
+**Report Time:** {{ report_time }}
 **Total Papers Analyzed:** {{ total_papers }}
 
 ---
@@ -72,6 +75,7 @@ class ReportGenerator:
     def generate_markdown_report(
         self,
         query: str,
+        perspective_title: str,
         papers: List[Dict],
         executive_summary: str,
         key_themes: str,
@@ -80,21 +84,26 @@ class ReportGenerator:
     ) -> str:
         """
         Generate a markdown report from analyzed papers.
-        
+
         Args:
             query: Original research query
+            perspective_title: AI-generated perspective title for the report
             papers: List of paper dictionaries with summaries
             executive_summary: Overall summary of findings
             key_themes: Key themes identified across papers
             recommendations: Recommendations for further reading
             conclusion: Concluding remarks
-            
+
         Returns:
             Formatted markdown report as string
         """
+        now = datetime.now()
         report = self.template.render(
             query=query,
-            date=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            perspective_title=perspective_title,
+            date=now.strftime('%Y-%m-%d %H:%M:%S'),
+            report_date=now.strftime('%B %d, %Y'),  # e.g., "November 23, 2025"
+            report_time=now.strftime('%I:%M:%S %p'),  # e.g., "02:30:45 PM"
             total_papers=len(papers),
             papers=papers,
             executive_summary=executive_summary,

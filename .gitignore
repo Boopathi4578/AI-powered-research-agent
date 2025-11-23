@@ -39,7 +39,7 @@ env/
 .DS_Store
 Thumbs.db
 
-# Generated Reports (optional - uncomment to ignore)
+# Generated Reports 
 # data/*.md
 # data/*.json
 
