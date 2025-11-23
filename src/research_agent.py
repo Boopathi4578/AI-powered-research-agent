@@ -8,14 +8,19 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agno.agent import Agent
+from agno.models.aws import AwsBedrock
 from agno.tools import tool
 from typing import List, Dict, Optional
 import logging
 from datetime import datetime
+import os
+from dotenv import load_dotenv
 
 from utils.paper_fetcher import PaperFetcher
 from utils.report_generator import ReportGenerator
-from models.llm_config import LLMConfig
+
+# Load environment variables
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -24,27 +29,27 @@ logger = logging.getLogger(__name__)
 class ResearchAgent:
     """
     AI-powered research agent that fetches and summarizes academic papers.
+    Uses AWS Bedrock for LLM inference.
     """
-    
-    def __init__(
-        self,
-        model_provider: str = "openai",
-        max_papers: int = 10
-    ):
+
+    def __init__(self, max_papers: int = 10):
         """
         Initialize the Research Agent.
-        
+
         Args:
-            model_provider: LLM provider ('openai' or 'anthropic')
             max_papers: Maximum number of papers to fetch
         """
         self.paper_fetcher = PaperFetcher(max_results=max_papers)
         self.report_generator = ReportGenerator()
-        self.model_provider = model_provider
-        
-        # Get LLM model
-        self.model = LLMConfig.get_default_model(provider=model_provider)
-        
+
+        # Get AWS Bedrock model ID from environment
+        model_id = os.getenv("BEDROCK_MODEL_ID")
+        if not model_id:
+            raise ValueError("BEDROCK_MODEL_ID environment variable is required")
+
+        # Initialize AWS Bedrock model using Agno's built-in support
+        self.model = AwsBedrock(id=model_id)
+
         # Create Agno agent for summarization
         self.summarizer_agent = Agent(
             name="Paper Summarizer",
