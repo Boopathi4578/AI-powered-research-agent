@@ -97,7 +97,3 @@ python test_new_sources.py   # runs source-specific tests and multi-source tests
 - Add CI to run linting and tests.
 - Improve Bedrock integration for typed responses or streaming.
 
-If you want, I can also:
-- add a `.env.example` file with the recommended variables,
-- run the demo/test scripts (requires internet and Bedrock credentials), or
-- add a short CONTRIBUTING guide.
