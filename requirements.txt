@@ -1,5 +1,6 @@
 # Core framework
 agno>=2.3.0
+dotenv>=1.0.0
 
 # LLM provider - AWS Bedrock
 boto3>=1.28.0
@@ -22,3 +23,5 @@ jinja2>=3.1.0
 python-dateutil>=2.8.0
 tqdm>=4.66.0
 
+# Web UI
+streamlit>=1.28.0

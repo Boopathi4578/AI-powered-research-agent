@@ -14,15 +14,18 @@ This repository contains a small research automation tool that fetches academic 
 - Report rendering via Jinja2 templates.
 
 **Repository Structure**
-- `main.py`: : Programmatic and interactive entrypoint. Use it for interactive queries or call `run()` from other code.
-- `demo_new_sources.py`: : Small demo to exercise the new paper sources and show example usage.
-- `test_new_sources.py`: : Script to test individual or multiple paper sources.
-- `src/research_agent.py`: : Core orchestration class `ResearchAgent` (fetch -> summarize -> synthesize -> report).
-- `utils/paper_fetcher.py`: : Paper fetching implementation for supported sources (arXiv, OpenAlex, CORE, Zenodo, DOAJ).
-- `utils/report_generator.py`: : Report generation (Markdown template + save helpers).
-- `models/llm_config.py`: : Thin Bedrock wrapper and helper factory for LLM configuration.
-- `requirements.txt`: : Python dependencies used by the project.
-- `data/`: : Output folder where generated `*.md` and `*.json` files are saved.
+- `streamlit_app.py`: Web UI frontend with interactive interface and real-time progress tracking.
+- `main.py`: Programmatic and interactive CLI entrypoint. Use it for interactive queries or call `run()` from other code.
+- `demo_new_sources.py`: Small demo to exercise the new paper sources and show example usage.
+- `test_new_sources.py`: Script to test individual or multiple paper sources.
+- `src/research_agent.py`: Core orchestration class `ResearchAgent` (fetch -> summarize -> synthesize -> report).
+- `utils/paper_fetcher.py`: Paper fetching implementation for supported sources (arXiv, OpenAlex, CORE, Zenodo, DOAJ).
+- `utils/report_generator.py`: Report generation (Markdown template + save helpers).
+- `models/llm_config.py`: Thin Bedrock wrapper and helper factory for LLM configuration.
+- `requirements.txt`: Python dependencies used by the project.
+- `data/`: Output folder where generated `*.md` and `*.json` files are saved.
+- `STREAMLIT_README.md`: Detailed documentation for the Streamlit web interface.
+- `run_streamlit.sh` / `run_streamlit.bat`: Convenience scripts to launch the Streamlit app.
 
 **Requirements**
 - Python 3.10+ (recommended)
@@ -54,7 +57,30 @@ MAX_PAPERS=5
 
 **Quick start**
 
-- Interactive mode (recommended for exploration):
+- **Streamlit Web UI (recommended for most users):**
+
+```bash
+# Install streamlit if not already installed
+pip install streamlit>=1.28.0
+
+# Run the web interface
+streamlit run streamlit_app.py
+
+# Or use the convenience script
+./run_streamlit.sh    # Linux/Mac
+run_streamlit.bat     # Windows
+```
+
+The Streamlit app provides:
+- Interactive web interface with real-time progress tracking
+- Multi-source selection (OpenAlex, arXiv, CORE, Zenodo, DOAJ)
+- Live logs and status updates
+- Download reports in Markdown and JSON formats
+- Preview generated reports in the browser
+
+See [STREAMLIT_README.md](STREAMLIT_README.md) for detailed Streamlit documentation.
+
+- **Interactive CLI mode:**
 
 ```bash
 export BEDROCK_MODEL_ID="<your-bedrock-model-id>"
@@ -62,7 +88,7 @@ export AWS_REGION="us-east-1"
 python main.py
 ```
 
-- Programmatic call (example from Python):
+- **Programmatic call (example from Python):**
 
 ```python
 from main import run
@@ -75,7 +101,7 @@ report_path = run(
 print(report_path)
 ```
 
-- Demo and tests:
+- **Demo and tests:**
 
 ```bash
 python demo_new_sources.py   # runs several demo scenarios for paper fetching
