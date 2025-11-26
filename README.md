@@ -78,7 +78,7 @@ Create a `.env` file in the project root:
 
 ```bash
 # AWS Bedrock Configuration (REQUIRED)
-BEDROCK_MODEL_ID="arn:aws:bedrock:us-east-1:...:inference-profile/us.anthropic.claude-3-5-haiku-20241022-v1:0"
+BEDROCK_MODEL_ID="arn:aws:bedrock:us-east-1:...:inference-profile/us.anthropic.claude-sonnet-4-20250514-v1:0"
 AWS_REGION="us-east-1"
 AWS_ACCESS_KEY_ID="AKIA..."
 AWS_SECRET_ACCESS_KEY="..."
