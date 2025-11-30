@@ -6,6 +6,21 @@ echo "AI-Powered Research Agent - Streamlit Frontend"
 echo "================================================"
 echo ""
 
+# Check if python virtual environment exists, create if not
+if [ ! -d "venv" ]; then
+    echo "⚠️  Python virtual environment not found."
+    echo "Creating virtual environment..."
+    python3 -m venv venv
+    echo "✅ Virtual environment created."
+    echo ""
+fi
+
+# Activate the virtual environment
+echo "🔄 Activating virtual environment..."
+source venv/bin/activate
+echo "✅ Virtual environment activated."
+echo ""
+
 # Check if streamlit is installed
 if ! command -v streamlit &> /dev/null
 then

@@ -6,6 +6,21 @@ echo AI-Powered Research Agent - Streamlit Frontend
 echo ================================================
 echo.
 
+REM Check if python virtual environment exists, create if not
+if not exist "venv" (
+    echo Warning: Python virtual environment not found.
+    echo Creating virtual environment...
+    python -m venv venv
+    echo Virtual environment created.
+    echo.
+)
+
+REM Activate the virtual environment
+echo Activating virtual environment...
+call venv\Scripts\activate.bat
+echo Virtual environment activated.
+echo.
+
 REM Check if streamlit is installed
 streamlit --version >nul 2>&1
 if %errorlevel% neq 0 (
